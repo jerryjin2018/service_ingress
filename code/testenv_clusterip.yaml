@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: net-test
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: net-test
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-net
+  template:
+    metadata:
+      labels:
+        app: nginx-net
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-clusterip
+  namespace: net-test
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx-net
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
