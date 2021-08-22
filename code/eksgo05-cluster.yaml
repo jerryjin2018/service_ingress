@@ -1,0 +1,25 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: eksgo05
+  region: cn-northwest-1 
+  version: "1.19"
+
+managedNodeGroups:
+  - name: ng-eksgo05-01
+    instanceType: t3.xlarge
+    instanceName: ng-eksgo05
+    desiredCapacity: 3
+    minSize: 1
+    maxSize: 8 
+    volumeSize: 100
+    ssh:
+      publicKeyName: your_key_pair
+      allow: true
+      enableSsm: true 
+    iam:
+      withAddonPolicies:
+        ebs: true
+        fsx: true
+        efs: true
